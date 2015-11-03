@@ -210,6 +210,38 @@ $(function() {
 				
 			}
 		}),
+		WriteCatView = Parse.View.extend({
+			template: Handlebars.compile($('#write-tpl-cat').html()),
+			events: {
+				'submit .form-write': 'submit'
+			},
+			submit: function(e) {
+				e.preventDefault();
+				var data = $(e.target).serializeArray();
+				// If there's no blog data, then create a new blog
+				this.model = this.model || new Category();
+				this.model.update({
+					name: data[0].value,
+					url: data[0].value.toString().toLowerCase()
+				});
+			},
+			render: function(){
+				var attributes;
+				// If the user is editing a blog, that means there will be a blog set as this.model
+				// therefore, we use this logic to render different titles and pass in empty strings
+				if (this.model) {
+					attributes = this.model.toJSON();
+					attributes.form_title = 'Category Blog';
+				} else {
+					attributes = {
+						form_title: 'Add a Category',
+						title: '',
+						summary: '',
+						content: ''
+					}
+				}
+			}
+		}),
 		BlogRouter = Parse.Router.extend({
 		
 			// Here you can define some shared variables
@@ -222,7 +254,7 @@ $(function() {
 			start: function(){
 				Parse.history.start({
 					// put in your directory below
-					root: '/tutorial_blog/'
+					root: '/'
 				});
 				this.categories.fetch().then(function(categories){
 					var categoriesView = new CategoriesView({ collection: categories });
@@ -239,6 +271,7 @@ $(function() {
 				'admin': 'admin',
 				'login': 'login',
 				'add': 'add',
+				'add_category': 'add_category',
 				'edit/:id': 'edit',
 				'del/:id': 'del',
 				'logout': 'logout',
@@ -330,6 +363,16 @@ $(function() {
 					$container.html(writeBlogView.el);
 				}
 			},
+			add_category: function() {
+				// Check login
+				if (!Parse.User.current()) {
+					this.navigate('#/login', { trigger: true });
+				} else {
+					var writeCatView = new WriteCatView();
+					writeCatView.render();
+					$container.html(writeCatView.el);
+				}
+			},
 			edit: function(id) {
 				// Check login
 				if (!Parse.User.current()) {
@@ -348,6 +391,24 @@ $(function() {
 					});
 				}
 			},
+			edit_cat: function(id) {
+				// Check login
+				if (!Parse.User.current()) {
+					this.navigate('#/login', { trigger: true });
+				} else {
+					var query = new Parse.Query(Category);
+					query.get(id, {
+						success: function(category) {
+							var writeCatView = new WriteBlogView({ model: category });
+							writeCatView.render();
+							$container.html(writeCatView.el);
+						},
+						error: function(category, error) {
+							console.log(error);
+						}
+					});
+				}
+			},
 			del: function(id) {
 				if (!Parse.User.current()) {
 					this.navigate('#/login', { trigger: true });
@@ -356,6 +417,19 @@ $(function() {
 						query = new Parse.Query(Blog);
 					query.get(id).then(function(blog){
 						blog.destroy().then(function(blog){
+							self.navigate('admin', { trigger: true });
+						})
+					});
+				}
+			},
+			del_cat: function(id) {
+				if (!Parse.User.current()) {
+					this.navigate('#/login', { trigger: true });
+				} else {
+					var self = this,
+						query = new Parse.Query(Category);
+					query.get(id).then(function(category){
+						category.destroy().then(function(category){
 							self.navigate('admin', { trigger: true });
 						})
 					});

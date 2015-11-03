@@ -134,6 +134,7 @@
     <script id="admin-tpl" type="text/x-handlebars-template">
       <h2>Welcome, {{username}}!</h2>
       <a href="#/add" class="add-blog btn btn-lg btn-primary">Add a New Blog</a>
+      <a href="#/add_cat" class="add-blog btn btn-lg btn-primary">Add a New Category</a>
       <a href="#/logout" class="add-blog btn btn-lg btn-default">Logout</a>
       <table>
         <thead>
@@ -183,6 +184,19 @@
         <div class="form-group">
           <label for="content">Content</label>
           <textarea name="content" class="form-control write-content" rows="20">{{{content}}}</textarea>
+        </div>
+        <button class="btn btn-lg btn-primary btn-block" type="submit">Submit</button>
+      </form>
+    </script>
+
+
+    <script id="write-tpl-cat" type="text/x-handlebars-template">
+      <h2>{{form_title}}</h2>
+
+      <form class="form-write" role="form">
+        <div class="form-group">
+          <label for="name">Category name</label>
+          <input name="name" type="text" class="form-control" id="name" value="{{name}}"></input>
         </div>
         <button class="btn btn-lg btn-primary btn-block" type="submit">Submit</button>
       </form>
