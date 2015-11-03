@@ -399,7 +399,7 @@ $(function() {
 					var query = new Parse.Query(Category);
 					query.get(id, {
 						success: function(category) {
-							var writeCatView = new WriteBlogView({ model: category });
+							var writeCatView = new WriteCatView({ model: category });
 							writeCatView.render();
 							$container.html(writeCatView.el);
 						},
