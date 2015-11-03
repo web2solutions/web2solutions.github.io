@@ -217,7 +217,7 @@ $(function() {
 						title: '',
 						summary: '',
 						content: ''
-					}
+					};
 				}
 
 				var self = this,
@@ -267,7 +267,7 @@ $(function() {
 						title: '',
 						summary: '',
 						content: ''
-					}
+					};
 				}
 
 				this.$el.html(this.template(attributes)).find('.write-content').wysihtml5();
@@ -449,7 +449,7 @@ $(function() {
 					query.get(id).then(function(blog){
 						blog.destroy().then(function(blog){
 							self.navigate('admin', { trigger: true });
-						})
+						});
 					});
 				}
 			},
@@ -462,7 +462,7 @@ $(function() {
 					query.get(id).then(function(category){
 						category.destroy().then(function(category){
 							self.navigate('admin', { trigger: true });
-						})
+						});
 					});
 				}
 			},
