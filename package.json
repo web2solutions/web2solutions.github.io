@@ -1,0 +1,14 @@
+{
+  "name": "web2solutions.github.io",
+  "version": "0.0.1",
+  "description": "web2solutions.github.io web site",
+  "devDependencies": {
+    "gulp": "^3.9.0",
+    "gulp-concat": "^2.6.0",
+    "gulp-jshint": "^1.12.0",
+    "gulp-rename": "^1.2.2",
+    "gulp-uglify": "^1.4.2"
+  },
+  "author": "José Eduardo Perotta de Almeida",
+  "license": "GPL-2.0"
+}
